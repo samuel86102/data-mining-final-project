@@ -14,6 +14,9 @@ print(df.info())
 
 # Correlation Matrix
 corr_matrix = df.corr()
+
+corr_matrix.to_csv("out.csv")
+
 print((corr_matrix))
 sn.heatmap(corr_matrix, annot=True)
 plt.show()
