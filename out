@@ -1,26 +1,3 @@
-# Data Mining Final Project - 07
-## Pokemon Dataset
-![](img/logo.png)
-Source:[https://www.kaggle.com/netzuel/pokmon-go-dataset-15-generations](https://www.kaggle.com/netzuel/pokmon-go-dataset-15-generations)
-
-## Data Preprocessing
-決定取用的feature前，先身對features進行correlation的分析，由於`Primary`、`Secondary`和`Lengendary`的類型皆為string，因此使用以下function轉換為數字的表示法:
-
-```python
-# Convert string attributes to categorical attributes
-df['Primary'] = df['Primary'].astype('category').cat.codes
-df['Secondary'] = df['Secondary'].astype('category').cat.codes
-df['Legendary'] = df['Legendary'].astype('category').cat.codes
-```
-接著使用seanborn的heatmap畫出correlation matrix:
-```python
-corr_matrix = df.corr()
-sn.heatmap(corr_matrix, annot=True)
-plt.show()
-```
-### Correlation Matrix
-
-```
                Pokedex   Stamina    Attack   Defense   Primary  Secondary  \
 Pokedex       1.000000  0.120524  0.175620  0.098728 -0.082739  -0.113946   
 Stamina       0.120524  1.000000  0.409917  0.348467  0.137479  -0.068558   
@@ -67,7 +44,4 @@ Weight         0.426227  0.540116    0.082506
 Height         0.272710  0.487339   -0.039373  
 Legendary      1.000000  0.445100    0.099637  
 MaxCP          0.445100  1.000000    0.122806  
-Generation     0.099637  0.122806    1.000000 
-```
-### Heatmap
-![](img/corr.png)
+Generation     0.099637  0.122806    1.000000  
