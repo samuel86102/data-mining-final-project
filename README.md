@@ -39,3 +39,21 @@ plt.show()
 
 ### Heatmap
 ![](img/corr.png)
+
+---
+
+## Target
+
+```python
+df["Capture_rate"].unique()
+df["Escape_rate"].unique()
+```
+
+
+
+
+```
+19 unique Values in Capture_rate:[0.2   0.1   0.05  0.5   0.25  0.125 0.3   0.6   0.15  0.4   0.7   0.03   0.06  1.    0.    0.02  0.9   0.01  0.175]
+13 unique Values in Escape_rate:[0.1  0.07 0.05 0.2  0.09 0.06 0.15 0.99 0.   0.12 0.08 0.04 0.01]
+```
+
