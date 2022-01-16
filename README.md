@@ -45,7 +45,7 @@ plt.show()
 
 Attack|Defense|Escape_rate|MaxCP
 ---:|:---:|:---:|:---:|:---
--0.501|-0.484|0.499|-0.569
+\-0.501|\-0.484|0.499|\-0.569
 
 ```python
 features = ['Attack','Defense','Escape_rate','MaxCP']
