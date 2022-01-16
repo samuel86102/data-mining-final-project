@@ -1,11 +1,15 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 df = pd.read_csv('input/train.csv')
 
-cr_num = (df["Capture_rate"].unique())
-er_num = (df["Escape_rate"].unique())
-
-print(str(len(cr_num))+" unique Values in Capture_rate:"+str(cr_num))
-print(str(len(cr_num))+" unique Values in Capture_rate:"+str(cr_num))
+features = ['Attack','Defense','Escape_rate','MaxCP']
+X = df[features]
 
 
+y = df['Capture_rate']
+print(X.head())
+print(y.head())
 

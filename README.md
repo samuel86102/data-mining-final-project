@@ -40,6 +40,41 @@ plt.show()
 ### Heatmap
 ![](img/corr.png)
 
+### Feature Selection
+選擇和`Capture_rate`correlation絕對值大於等於0.4的features
+
+Attack|Defense|Escape_rate|MaxCP
+---:|:---:|:---:|:---:|:---
+-0.501|-0.484|0.499|-0.569
+
+```python
+features = ['Attack','Defense','Escape_rate','MaxCP']
+X = df[features]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ## Target
