@@ -1,5 +1,4 @@
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
-from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -7,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def discretize(df, feature):
-    disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
+    disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='quantile')
     disc.fit(df[[feature]])
     #print(disc.bin_edges_)
     train_t = disc.transform(df[[feature]])
@@ -25,6 +24,7 @@ df_test['Capture_rate'] = discretize(df_test,'Capture_rate')
 
 
 ## Plot the distribution of 'Capture_rate' in training data and testing data
+'''
 train_plt = sns.displot(df['Capture_rate'],color='#A0E7E5').set(title='Training Data')
 plt.tight_layout()
 plt.savefig('train.png')
@@ -32,7 +32,7 @@ test_plt = sns.displot(df_test['Capture_rate'],color='#FFAEBC').set(title='Testi
 plt.tight_layout()
 plt.savefig('test.png')
 plt.show()
-
+'''
 
 ## Drop unnecessary features and split data into training data and validation data
 X = df.drop(['Name','Pokedex','Primary','Secondary','Legendary','Capture_rate'], axis='columns')
