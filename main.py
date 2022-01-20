@@ -1,77 +1,59 @@
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import KBinsDiscretizer
+from sklearn.model_selection import train_test_split
 import pandas as pd
-from sklearn.model_selection import train_test_split
-import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-from mylib import discretize
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-from sklearn.preprocessing import KBinsDiscretizer, Normalizer
-from sklearn.tree import export_graphviz
+import seaborn as sns
 
-df = pd.read_csv('input/train.csv')
+def discretize(df, feature):
+    disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
+    disc.fit(df[[feature]])
+    #print(disc.bin_edges_)
+    train_t = disc.transform(df[[feature]])
+    return pd.DataFrame(train_t, columns = [feature])
+
+# Import Data
+df = pd.read_csv('input/train.csv') 
 df_test = pd.read_csv('input/test.csv')
 
-#features = ['Attack','Defense','Escape_rate','MaxCP']
+# Preprocessing
 
-#df = discretize(df)
+## Equal Width Discretization
+df['Capture_rate'] = discretize(df,'Capture_rate')
+df_test['Capture_rate'] = discretize(df_test,'Capture_rate')
 
-# Equal Frequency/Width Distretization
 
-disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
-disc.fit(df[['Capture_rate']])
-train_t = disc.transform(df[['Capture_rate']])
-df['Capture_rate'] = pd.DataFrame(train_t, columns = ['Capture_rate'])
-
-disc.fit(df_test[['Capture_rate']])
-train_t = disc.transform(df_test[['Capture_rate']])
-df_test['Capture_rate'] = pd.DataFrame(train_t, columns = ['Capture_rate'])
-
-# Encode Legendary as numbers
-df['Legendary'] = df['Legendary'].astype('category').cat.codes
-df_test['Legendary'] = df_test['Legendary'].astype('category').cat.codes
-
-'''
-sns.displot(df['Capture_rate'])
-sns.displot(df_test['Capture_rate'])
+## Plot the distribution of 'Capture_rate' in training data and testing data
+train_plt = sns.displot(df['Capture_rate'],color='#A0E7E5').set(title='Training Data')
+plt.tight_layout()
+plt.savefig('train.png')
+test_plt = sns.displot(df_test['Capture_rate'],color='#FFAEBC').set(title='Testing Data')
+plt.tight_layout()
+plt.savefig('test.png')
 plt.show()
-'''
-print(disc.bin_edges_)
-
-#print(df.Capture_rate.value_counts())
-#sns.countplot(x='Capture_rate',data=df)
-#plt.show()
-
-#X = df[features]
 
 
-X = df.drop(['Name','Pokedex','Primary','Secondary','Capture_rate'],axis='columns')
+## Drop unnecessary features and split data into training data and validation data
+X = df.drop(['Name','Pokedex','Primary','Secondary','Legendary','Capture_rate'], axis='columns')
 y = df['Capture_rate']
-train_X, test_X, train_y, test_y = train_test_split(X, y, test_size = 0.2)
-clf = DecisionTreeClassifier()
+#train_X, test_X, train_y, test_y = train_test_split(X, y, test_size = 0.2)
+train_X = X
+train_y = y
+
+## Build model
+clf = DecisionTreeClassifier(criterion='gini', max_depth=5)
 clf.fit(train_X, train_y)
-#print(clf.score(test_X,test_y))
-X_ = df.drop(['Name','Pokedex','Primary','Secondary','Capture_rate'],axis='columns')
-y_ = df['Capture_rate']
-print(clf.score(X_,y_))
+# Export tree structure
+export_graphviz(clf, out_file='tree.dot')
+'''
+accuracy = clf.score(test_X, test_y)
+print(accuracy)
+'''
+## Testing data
+X_ = df_test.drop(['Name','Pokedex','Primary','Secondary','Legendary','Capture_rate'],axis='columns')
+y_ = df_test['Capture_rate']
+accuracy_test = clf.score(X_, y_)
+print(accuracy_test)
 
-#predicted = clf.predict(test_X)
-'''
-cri = ['gini','entropy']
-for e in cri:
-    clf = DecisionTreeClassifier(criterion=e)
-    clf.fit(train_X, train_y)
-    print(clf.score(test_X,test_y))
-    predicted = clf.predict(test_X)
-
-'''
-'''
-export_graphviz(clf, out_file='tree.dot',
-                feature_names=['Attack', 'Defense','Escape_rate','MaxCP'])
-'''
-# Accuracy
-#accuracy = accuracy_score(test_y, predicted)
-#print(accuracy)
-# classification report
-# print(classification_report(test_y,predicted))
 
