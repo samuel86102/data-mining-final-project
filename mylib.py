@@ -12,4 +12,5 @@ def discretize(df):
     
     df['Capture_rate'] = df.apply(func, axis=1)
     df['Capture_rate'] = df['Capture_rate'].astype('int64')
+    return df
 
