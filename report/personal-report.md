@@ -1,3 +1,6 @@
+## Data Mining Personal Report
+> 陳子新 第七組
+
 ## 1.專題實作目的
 本專題使用Pokemon GO的資料集，其中包含了649隻Pokemon的各種feature(Attack, Defense, MaxHP...等等)，我們希望能透過Data Mining的方法，讓Model可以學到feature間的關聯，並且能幫預測出該Pokemon是否容易抓到(Capture Rate)，此外，由於`Capture_rate`本身的數值是連續的，因此我們藉由discretization的方式切成了4個區間
 
@@ -48,7 +51,7 @@ accuracy = clf.score(test_X, test_y)
 ```
 ## 6.結果及討論
 在本次實作中發現，原本想要把我們要預測的`Capture_rate`作equal frequency的discretization，但實驗後發現equal width得到的分數遠遠高於equal frequency，有可能是因為我們的資料分佈不是常態分佈，因此equal width比較能表示原本的資料分佈
-```
+```python
 # Accuracy when using equal width
 0.9076923076923077
 # Accuracy when using equal frequency
