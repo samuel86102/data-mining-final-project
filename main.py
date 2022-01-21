@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def discretize(df, feature):
-    disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='quantile')
+    disc = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
     disc.fit(df[[feature]])
     #print(disc.bin_edges_)
     train_t = disc.transform(df[[feature]])
@@ -15,6 +15,7 @@ def discretize(df, feature):
 # Import Data
 df = pd.read_csv('input/train.csv') 
 df_test = pd.read_csv('input/test.csv')
+features = ['Attack','Defense','Escape_rate','MaxCP']
 
 # Preprocessing
 
@@ -36,6 +37,8 @@ plt.show()
 
 ## Drop unnecessary features and split data into training data and validation data
 X = df.drop(['Name','Pokedex','Primary','Secondary','Legendary','Capture_rate'], axis='columns')
+
+
 y = df['Capture_rate']
 #train_X, test_X, train_y, test_y = train_test_split(X, y, test_size = 0.2)
 train_X = X
@@ -52,6 +55,7 @@ print(accuracy)
 '''
 ## Testing data
 X_ = df_test.drop(['Name','Pokedex','Primary','Secondary','Legendary','Capture_rate'],axis='columns')
+
 y_ = df_test['Capture_rate']
 accuracy_test = clf.score(X_, y_)
 print(accuracy_test)
